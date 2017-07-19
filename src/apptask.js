@@ -154,7 +154,8 @@ function addCollectdProfile(app, callback) {
     assert.strictEqual(typeof app, 'object');
     assert.strictEqual(typeof callback, 'function');
 
-    var collectdConf = ejs.render(COLLECTD_CONFIG_EJS, { appId: app.id, containerId: app.containerId });
+    // FIXME: move this to separate file collectd.js maybe and generate this for admin domain as well
+    var collectdConf = ejs.render(COLLECTD_CONFIG_EJS, { appId: app.id, containerId: app.containerId, fqdn: config.appFqdn(app.location) });
     fs.writeFile(path.join(paths.COLLECTD_APPCONFIG_DIR, app.id + '.conf'), collectdConf, function (error) {
         if (error) return callback(error);
         shell.sudo('addCollectdProfile', [ RELOAD_COLLECTD_CMD ], callback);
