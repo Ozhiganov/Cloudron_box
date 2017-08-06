@@ -30,3 +30,17 @@ LoadPlugin "table"
     </Result>
   </Table>
 </Plugin>
+
+LoadPlugin "tail"
+<Plugin "tail">
+   <File "/var/log/nginx/access.log">
+     Instance "nginx"
+     <Match>
+       Regex " \"<%= fqdn %>\""
+       DSType "CounterInc"
+       Type counter
+       Instance "requests"
+     </Match>
+   </File>
+</Plugin>
+
